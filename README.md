@@ -32,9 +32,9 @@
         -d mariadb
         
 	docker run --name nextcloud -p 80:80 -p 443:443 \
-	--link some_mariadb:nc_mariadb \
-	-v /var/www/html/data:/var/www/html/data \
-	-d my_nextcloud
+        --link some_mariadb:nc_mariadb \
+        -v /var/www/html/data:/var/www/html/data \
+        -d my_nextcloud
 
 ###### Premier lancement
 remplacer localhost par nc_mariadb
