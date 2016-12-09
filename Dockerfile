@@ -14,7 +14,6 @@ RUN apt-get update && apt-get install -y \
 	libxml2-dev \
 	&& rm -rf /var/lib/apt/lists/*
 
-# https://doc.owncloud.org/server/8.1/admin_manual/installation/source_installation.html#prerequisites
 RUN docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
 	&& docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ \
 	&& docker-php-ext-install exif gd intl ldap mbstring mcrypt mysql opcache pdo_mysql pdo_pgsql pgsql zip
@@ -37,7 +36,7 @@ RUN set -ex \
 	&& pecl install redis-2.2.8 \
 	&& docker-php-ext-enable apcu memcached redis
 
-# test
+# certificate generation
 RUN openssl genrsa -out nextcloud.key 2048 \
 	&& openssl req -new -key nextcloud.key -out nextcloud.csr -subj "/C=FR/ST=Toulouse/Toulouse/O=Perso/OU=IT Department/CN=example.com" \
 	&& openssl x509 -req -days 365 -in nextcloud.csr -signkey nextcloud.key -out nextcloud.crt
@@ -47,7 +46,7 @@ RUN mv nextcloud.crt /etc/ssl/private \
 	&& mv nextcloud.csr /etc/ssl/private/
 
 
-# fin test
+
 
 ENV NEXTCLOUD_VERSION 10.0.1
 VOLUME /var/www/html
@@ -62,7 +61,6 @@ RUN curl -fsSL -o nextcloud.tar.bz2 \
 
 # gpg key from https://nextcloud.com/nextcloud.asc
 	#&& gpg --import nextcloud.asc \
-	
 	#&& gpg --verify nextcloud.tar.bz2.asc nextcloud.tar.bz2 \
 
 	&& gpg --keyserver ha.pool.sks-keyservers.net --recv-keys 28806A878AE423A28372792ED75899B9A724937A \
@@ -70,9 +68,6 @@ RUN curl -fsSL -o nextcloud.tar.bz2 \
 	&& rm -r "$GNUPGHOME" nextcloud.tar.bz2.asc \
 	&& tar -xjf nextcloud.tar.bz2 -C /usr/src/ \
 	&& rm nextcloud.tar.bz2
-
-#RUN sed "s/);/\t\'forcessl\' => true,\n);/" < /var/www/html/nextcloud/config/conf.php > /var/www/html/nextcloud/config/config.php.new
-#RUN mv /var/www/html/nextcloud/config/config.php.new /var/www/html/nextcloud/config/config.php
 
 COPY docker-entrypoint.sh /entrypoint.sh
 
