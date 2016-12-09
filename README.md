@@ -1,3 +1,8 @@
+Inspiré du Dockerfile officiel pour Owncloud
+https://github.com/docker-library/owncloud/tree/373a10dfe09623b32510f64912d2188c6395f64e/9.1/apache
+
+Ajout de certificat auto-signé pour l'utiliser avec https/SSL
+
 # Pour build l'image:
 ## Se placer dans le repertoire ou se trouve le Dockerfile
 
