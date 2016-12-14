@@ -48,7 +48,7 @@ RUN mv nextcloud.crt /etc/ssl/private \
 
 
 
-ENV NEXTCLOUD_VERSION 10.0.1
+ENV NEXTCLOUD_VERSION 11.0.0
 VOLUME /var/www/html
 
 RUN curl -fsSL -o nextcloud.tar.bz2 \
